@@ -1,0 +1,7 @@
+@import '~antd/dist/antd.css';
+@import '~inter/inter-hinted.css';
+
+:root{
+  font-display: unset;
+  font-family: 'Inter'
+}
