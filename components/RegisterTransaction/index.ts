@@ -1,0 +1,1 @@
+export {default as RegisterTransaction} from './view';

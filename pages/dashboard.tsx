@@ -1,7 +1,23 @@
 import React from 'react';
-import { Icon, Divider } from 'antd';
+import { Icon, Divider, Button, Input } from 'antd';
 import format from 'date-fns/format';
 import { Table } from '../components/Table';
+import { LayoutAuth } from '../layouts/auth';
+import { AccountCard } from '../components/AccountCard';
+import { useQuery, useApolloClient } from '@apollo/react-hooks';
+import GET_TRANSACTION from '../api/GetTransactions.graphql';
+import ACCOUNTS from '../api/Accounts.graphql';
+
+import getConfig from 'next/config';
+import { Spinner } from '../components/Spinner';
+import { text } from 'body-parser';
+// import { Modal } from '../components/Modal';
+
+const { Search } = Input;
+const {
+	publicRuntimeConfig: { TEST }, // Available both client and server side
+	serverRuntimeConfig: { TEST_SERVER } // Only available server side
+} = getConfig();
 
 const columns = [
 	{
@@ -9,69 +25,81 @@ const columns = [
 		dataIndex: 'name',
 		key: 'name',
 		width: 150,
-		render: (text) => <a href="javascript:;">{text}</a>
+		render: text => {text}
 	},
 	{
 		title: 'Value',
-
 		width: 100,
-		render: (record) => <span>{`${record.amount} ${record.currency}`}</span>
+		render: (text,{ value, currency }) => {`${value} ${currency ? currency : 'zł'}`}
 	},
 
 	{
 		title: 'Date',
-		dataIndex: 'date',
-		key: 'date',
-		width: 200
+		dataIndex: 'createdAt',
+		key: 'createdAt',
+		width: 200,
+		render: (text) => {`${format(new Date(text), `DD.MM.YYYY`)}`}
 	},
 	{
 		title: 'Category',
 		dataIndex: 'category',
 		key: 'category'
-	},
-	{
-		title: null,
-		key: 'action',
-		width: 150,
-		render: (text, record) => (
-			<span>
-				<a href="javascript:;">Edit</a>
-				<Divider type="vertical" />
-				<a href="javascript:;" className="ant-dropdown-link">
-					Actions <Icon type="down" />
-				</a>
-			</span>
-		)
 	}
 ];
 
-let data = [];
 
-for (let i = 1; i <= 25; i++) {
-	data.push({
-		key: i,
-		name: `Zakupy #${i}`,
-		amount: i * 2.5,
-		currency: `zł`,
-		date: `${format(new Date(), `DD-MM-YYYY`)}`,
-		description: `Jedzenie`,
-		category: `Food`
-	});
-}
-
-const expandedRowRender = (record) => <p>{record.description}</p>;
-
-const table = {
-	bordered: false,
-	loading: false,
-	expandedRowRender,
-	expandRowByClick: true,
-	size: 'small',
-	rowSelection: {},
-	scroll: { y: 240 },
-	hasData: !!data,
-	expandIconAsCell: false,
-	expandIcon: () => <span />
+const AccountsData = () => {
+	let { loading, error, data: { accounts } } = useQuery(ACCOUNTS, {});
+	switch (true) {
+		case !!error:
+			return <p>{JSON.stringify(error)}</p>
+		case !!accounts:
+			return <AccountCard data={accounts} />;
+		case loading:
+		default:
+			return <Spinner />;
+	}
 };
 
-export default () => <Table table={table} data={data} columns={columns} />;
+
+const TransactionHistoryTable=(data?:any, loading?:any)=><>
+		<Search placeholder="I am looking for..." onSearch={(value) => console.log(value)} style={{ width: 200 }} />
+		{console.log(data)}
+		<Table
+				table={{
+					rowKey:(record) => record.uid,
+					bordered: false,
+					loading,
+ 					expandedRowRender : ({description}) => <p>{description}</p>,
+					expandRowByClick: true,
+					size: 'small',
+					rowSelection: {},
+					scroll: { y: 600 },
+					hasData: !loading,
+					expandIconAsCell: false,
+					expandIcon: () => <span/>
+				}}
+					data={data}
+					columns={columns}
+			/>
+
+			</>
+
+
+const HistoryInTable = ()=>{
+
+	const { loading, error, data: { transactions } } = useQuery(GET_TRANSACTION, {});
+
+	if(loading) return <TransactionHistoryTable	loading={loading} data={transactions}	/>;
+}
+
+
+export default () => {
+
+	return (
+		<LayoutAuth title="Dashboard">
+			<AccountsData /><br/>
+			<HistoryInTable/>
+		</LayoutAuth>
+	);
+};

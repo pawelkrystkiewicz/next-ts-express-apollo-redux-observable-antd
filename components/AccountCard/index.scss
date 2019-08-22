@@ -1,0 +1,22 @@
+.account-cards {
+	display: flex;
+	align-items: flex-start;
+	margin-top: 15px;
+	margin-bottom: 50px;
+}
+
+.account-card {
+	margin-right: 50px;
+	display: flex;
+	flex-direction: column;
+	width: 200px;
+	height: 120px;
+	border: 1px solid rgb(221, 221, 221);
+	border-radius: 10px;
+	padding: 10px;
+
+	.account-card--add {
+		right: -80%;
+		bottom: -36px;
+	}
+}

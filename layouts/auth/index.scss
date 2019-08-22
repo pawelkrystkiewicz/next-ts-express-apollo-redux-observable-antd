@@ -1,0 +1,44 @@
+.layout {
+	width: 100vw;
+	height: 100vh;
+	display: grid;
+	grid-template-columns: 50px 1fr;
+	grid-template-areas: ". .";
+	justify-items: stretch;
+	align-items: stretch;
+	grid-column-gap: 10px;
+
+	.sidebar {
+		.nav {
+			display: flex;
+			flex-direction: column;
+		}
+	}
+
+	.content {
+		background-color: grey;
+		// height: 90vh;
+		// width: 75vw;
+	}
+}
+.logo {
+	// height: 50px;
+	height: auto;
+	width: 80px;
+	padding: 10px;
+	background: white;
+	// margin-left: 20px;
+}
+.logo--small {
+	height: 23px;
+	width: auto;
+}
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}

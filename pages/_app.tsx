@@ -4,17 +4,16 @@ import Link from 'next/link';
 import NProgress from 'nprogress';
 import Router from 'next/router';
 import { Provider } from 'react-redux';
-import withRedux from 'next-redux-wrapper';
-import makeStore from '../store';
+
 import { ApolloProvider } from 'react-apollo';
 import withApollo from '../lib/withApollo';
-
+import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks';
 const linkStyle = {
 	margin: '0 10px 0 0'
 };
 
 Router.events.on('routeChangeStart', (url) => {
-	console.log(`Loading: ${url}`);
+	// console.log(`Loading: ${url}`);
 	NProgress.start();
 });
 Router.events.on('routeChangeComplete', () => NProgress.done());
@@ -35,12 +34,14 @@ class MyApp extends App<any> {
 		const { Component, pageProps, store, apolloClient } = this.props;
 		return (
 			<ApolloProvider client={apolloClient}>
-				<Provider store={store}>
-					<Component {...pageProps} />
-				</Provider>
+				<ApolloHooksProvider client={apolloClient}>
+					<Provider store={store}>
+						<Component {...pageProps} />
+					</Provider>
+				</ApolloHooksProvider>
 			</ApolloProvider>
 		);
 	}
 }
 
-export default withApollo(withRedux(makeStore)(MyApp));
+export default withApollo(MyApp);
