@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Button } from 'antd';
+import { Button, Statistic } from 'antd';
 import IProps from './interface.d';
 import './index.scss';
 import { RegisterTransaction } from '../RegisterTransaction';
+import { useQuery } from '@apollo/react-hooks';
+import {ACCOUNTS} from '../../api/UserDetails.graphql';
+import { Spinner } from '../Spinner';
 
-export default ({ data }: IProps) => {
+const AccountCard = ({ data }: IProps) => {
 	const [ state, setState ] = useState(data);
 	const [ modalVisible, setModalVisible ] = useState(false);
 
@@ -17,9 +20,19 @@ export default ({ data }: IProps) => {
 		<div className="account-cards">
 			{state.map(({ currency, name, value }) => (
 				<div className="account-card">
-					<p>{name}</p>
-					{/* <p>{`${value} ${currency}`}</p> */}
-					<p>{`524,63 zł`}</p>
+					<Statistic
+						title={`${name}`}
+						value={1128.93}
+						precision={2}
+						suffix="zł" //currency symbol
+					/>
+						<Button
+									onClick={() => toggleModal()}
+									className="account-card--add"
+									shape="circle"
+									type="link"
+									icon="more"
+								/>
 					<RegisterTransaction
 						props={{
 							modalVisible,
@@ -27,9 +40,21 @@ export default ({ data }: IProps) => {
 							currency: `PLN`
 						}}
 					/>
-					<Button onClick={() => toggleModal()} className="account-card--add" shape="circle" icon="plus" />
 				</div>
 			))}
 		</div>
 	);
+};
+
+export default () => {
+	let { loading, error, data: { accounts } } = useQuery(ACCOUNTS, {});
+	switch (true) {
+		case !!error:
+			return <span>{error}</span>;
+		case !!accounts:
+			return <AccountCard data={accounts} />;
+		case loading:
+		default:
+			return <Spinner />;
+	}
 };

@@ -1,1 +1,1 @@
-export {default as AccountCard} from './view';
+export {default as Accounts} from './view';

@@ -1,9 +1,8 @@
 import gql from 'graphql-tag';
 
-const GET_TRANSACTION = gql`
+const GET_TRANSACTIONS = gql`
 	{
 		transactions {
-			id
 			value
 			name
 			createdAt
@@ -14,4 +13,4 @@ const GET_TRANSACTION = gql`
 	}
 `;
 
-export default GET_TRANSACTION;
+export default GET_TRANSACTIONS;

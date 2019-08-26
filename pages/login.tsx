@@ -12,7 +12,7 @@ export default class Signin extends React.Component {
     if (loggedInUser.user) {
       // Already signed in? No need to continue.
       // Throw them back to the main page
-      redirect(context, routes.index)
+      redirect(context, routes.dashboard)
     }
 
     return {}

@@ -9,14 +9,14 @@
 	margin-right: 50px;
 	display: flex;
 	flex-direction: column;
-	width: 150px;
-	height: 85px;
+	width: 200px;
+	height: 120px;
 	border: 1px solid rgb(221, 221, 221);
 	border-radius: 10px;
 	padding: 10px;
 
 	.account-card--add {
 		right: -80%;
-		top: -65%;
+		bottom: -36px;
 	}
 }

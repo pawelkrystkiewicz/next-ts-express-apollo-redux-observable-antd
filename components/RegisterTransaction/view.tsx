@@ -10,15 +10,6 @@ import { Form, Select, Input, InputNumber, DatePicker, Switch } from 'antd';
 const { Option } = Select;
 const size = 'middle';
 
-const CurrencySelector = () => (
-	<Select size={size} defaultValue={[ 0 ]}>
-		<Option value={0}>zł</Option>
-		<Option value={1}>$</Option>
-		<Option value={2}>€</Option>
-		<Option value={3}>£</Option>
-	</Select>
-);
-
 const userAccounts = [
 	{
 		name: 'Main account'

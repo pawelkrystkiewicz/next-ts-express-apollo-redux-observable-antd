@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, Component } from 'react';
 import cookie from 'cookie';
 import { ApolloConsumer } from 'react-apollo';
 // import { Button } from 'antd';
@@ -11,7 +11,10 @@ import { useQuery } from '@apollo/react-hooks';
 import { ME_FULL } from '../api/Me.graphql';
 import { Spinner } from '../components/Spinner';
 import { Tabs } from 'antd';
+import { ACCOUNTS, PROJECTS, REPEAT_PATTERNS, CATEGORIES } from '../api/UserDetails.graphql';
+import { Card, Icon, Avatar } from 'antd';
 
+const { Meta } = Card;
 const { TabPane } = Tabs;
 
 export const signout = (apolloClient) => async () => {
@@ -38,10 +41,55 @@ const UserDetails = () => {
 		default:
 			return <Spinner />;
 		case !!me:
-			return null;
-		// return <div>{JSON.stringify(me)}</div>;
+			// return null;
+			return (
+				<Card style={{ width: 300 }}>
+					<Meta
+						avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+						title={me.name}
+						description={me.email}
+					/>
+				</Card>
+			);
 	}
 };
+
+const ToTableQuery = ({ property, query }) => {
+	const { data, error, loading } = useQuery(query);
+	switch (true) {
+		case !!error:
+			return <span>{JSON.stringify(error)}</span>;
+		case loading:
+		default:
+			return <Spinner />;
+		case !!data[property]:
+			// return null;
+			return <div>{JSON.stringify(data[property])}</div>;
+	}
+};
+
+const tabsToRender = [
+	{
+		title: 'User details',
+		component: <UserDetails />
+	},
+	{
+		title: 'Accounts',
+		component: <ToTableQuery property={'me'} query={ACCOUNTS} />
+	},
+	{
+		title: 'Categories',
+		component: <ToTableQuery property={'me'} query={ACCOUNTS} />
+	},
+	{
+		title: 'Projects',
+		component: <ToTableQuery property={'me'} query={PROJECTS} />
+	},
+	{
+		title: 'Repeat patterns',
+		component: <ToTableQuery property={'me'} query={REPEAT_PATTERNS} />
+	}
+];
 
 export default class UserPage extends React.Component<any> {
 	static async getInitialProps(context) {
@@ -53,29 +101,19 @@ export default class UserPage extends React.Component<any> {
 	}
 
 	render() {
+		let i = 0;
 		return (
-			<LayoutAuth title="User">
-				<ApolloConsumer>
-					{(client) => (
-						<div>
-							Hello {this.props.loggedInUser.me.name}!<br />
-							{/* <button onClick={signout(client)}>Sign out</button> */}
-							{/* <br /> */}
-							<Tabs defaultActiveKey="1">
-								<TabPane tab="Tab 1" key="1">
-									Content of Tab Pane 1
-								</TabPane>
-								<TabPane tab="Tab 2" key="2">
-									Content of Tab Pane 2
-								</TabPane>
-								<TabPane tab="Tab 3" key="3">
-									Content of Tab Pane 3
-								</TabPane>
-							</Tabs>
-							<UserDetails />
-						</div>
-					)}
-				</ApolloConsumer>
+			<LayoutAuth title={this.props.loggedInUser.me.name}>
+				<Tabs defaultActiveKey="1">
+					{tabsToRender.map(({ title, component }) => {
+						i++;
+						return (
+							<TabPane tab={title} key={i}>
+								{component}
+							</TabPane>
+						);
+					})}
+				</Tabs>
 			</LayoutAuth>
 		);
 	}

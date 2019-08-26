@@ -2,6 +2,7 @@ import { ApolloClient, InMemoryCache } from 'apollo-boost';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import fetch from 'isomorphic-unfetch';
+import cache from './cache'
 
 let apolloClient = null;
 
@@ -19,11 +20,7 @@ function create(initialState, { getToken, fetchOptions }) {
 
 	const authLink = setContext((_, { headers }) => {
 		// const token = getToken()
-		return {
-			headers: {
-				...headers
-			}
-		};
+		return {headers: {	...headers	}	};
 	});
 
 	const isBrowser = typeof window !== 'undefined';
@@ -32,7 +29,7 @@ function create(initialState, { getToken, fetchOptions }) {
 		connectToDevTools: isBrowser,
 		ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
 		link: authLink.concat(httpLink),
-		cache: new InMemoryCache().restore(initialState || {})
+		cache//: new InMemoryCache().restore(initialState || {})
 	});
 }
 

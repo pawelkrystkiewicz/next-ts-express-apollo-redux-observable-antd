@@ -16,7 +16,7 @@ const SigninBox = ({ client }) => {
 				// Force a reload of all the current queries now that the user is
 				// logged in
 				client.cache.reset().then(() => {
-					redirect({}, routes.index);
+					redirect({}, routes.dashboard);
 				});
 			}}
 			onError={(error) => {
