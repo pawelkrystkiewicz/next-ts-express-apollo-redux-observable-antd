@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Statistic } from 'antd';
 import IProps from './interface.d';
 import './index.scss';
-import { RegisterTransaction } from '../RegisterTransaction';
+// import { RegisterTransaction } from '../AddTransaction';
 import { useQuery } from '@apollo/react-hooks';
 import {ACCOUNTS} from '../../api/UserDetails.graphql';
 import { Spinner } from '../Spinner';
@@ -26,20 +26,20 @@ const AccountCard = ({ data }: IProps) => {
 						precision={2}
 						suffix="zł" //currency symbol
 					/>
-						<Button
+						{/* <Button
 									onClick={() => toggleModal()}
 									className="account-card--add"
 									shape="circle"
 									type="link"
 									icon="more"
-								/>
-					<RegisterTransaction
+								/> */}
+					{/* <RegisterTransaction
 						props={{
 							modalVisible,
 							accountName: name,
 							currency: `PLN`
 						}}
-					/>
+					/> */}
 				</div>
 			))}
 		</div>

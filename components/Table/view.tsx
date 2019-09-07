@@ -21,35 +21,3 @@ export default ({ table, data, columns }: IProps) => {
 
 	return <Table {...state} columns={columns} dataSource={state.hasData ? data : null} />;
 };
-/**
- * 	handleToggle = (prop) => (enable) => {
-		this.setState({ [prop]: enable });
-	};
-
-	handleSizeChange = (e) => {
-		this.setState({ size: e.target.value });
-	};
-
-	handleExpandChange = (enable) => {
-		this.setState({ expandedRowRender: enable ? expandedRowRender : undefined });
-	};
-
-	handleRowSelectionChange = (enable) => {
-		this.setState({ rowSelection: enable ? {} : undefined });
-	};
-
-	handleScollChange = (enable) => {
-		this.setState({ scroll: enable ? scroll : undefined });
-	};
-
-	handleDataChange = (hasData) => {
-		this.setState({ hasData });
-	};
-
-	handlePaginationChange = (e) => {
-		const { value } = e.target;
-		this.setState({
-			pagination: value === 'none' ? false : { position: value }
-		});
-	};
- */

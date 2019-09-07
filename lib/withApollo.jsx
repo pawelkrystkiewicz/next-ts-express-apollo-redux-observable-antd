@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { getDataFromTree } from 'react-apollo';
 import Head from 'next/head';
 import initApollo from './initApollo';
-import initialState from '../store/initial-state';
 
 function parseCookies(req, options = {}) {
 	return cookie.parse(req ? req.headers.cookie || '' : document.cookie, options);
@@ -20,7 +19,7 @@ export default (App) => {
 		static async getInitialProps(ctx) {
 			const { AppTree, ctx: { req, res } } = ctx;
 			const apollo = initApollo(
-				initialState,
+				{},
 				{
 					getToken: () => parseCookies(req).cookie
 				}

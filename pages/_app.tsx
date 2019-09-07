@@ -1,13 +1,11 @@
 import React from 'react';
 import App from 'next/app';
-import Link from 'next/link';
 import NProgress from 'nprogress';
 import Router from 'next/router';
-import { Provider } from 'react-redux';
-
 import { ApolloProvider } from 'react-apollo';
 import withApollo from '../lib/withApollo';
 import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks';
+import { ModalProvider } from '../store/modal';
 const linkStyle = {
 	margin: '0 10px 0 0'
 };
@@ -35,9 +33,9 @@ class MyApp extends App<any> {
 		return (
 			<ApolloProvider client={apolloClient}>
 				<ApolloHooksProvider client={apolloClient}>
-					<Provider store={store}>
+					<ModalProvider>
 						<Component {...pageProps} />
-					</Provider>
+					</ModalProvider>
 				</ApolloHooksProvider>
 			</ApolloProvider>
 		);

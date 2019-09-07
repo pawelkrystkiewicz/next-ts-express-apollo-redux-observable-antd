@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache } from 'apollo-boost';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import fetch from 'isomorphic-unfetch';
-import cache from './cache'
+
 
 let apolloClient = null;
 
@@ -29,9 +29,13 @@ function create(initialState, { getToken, fetchOptions }) {
 		connectToDevTools: isBrowser,
 		ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
 		link: authLink.concat(httpLink),
-		cache//: new InMemoryCache().restore(initialState || {})
+		cache: new InMemoryCache().restore(initialState || {})
 	});
 }
+
+
+
+
 
 export default function initApollo(initialState, options) {
 	// Make sure to create a new client for every server-side request so that data
