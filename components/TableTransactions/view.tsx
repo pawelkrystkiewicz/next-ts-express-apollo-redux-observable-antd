@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 // import { Table } from '../Table';
 import GET_TRANSACTIONS from '../../api/GetTransactions.graphql';
 import { Table } from 'antd';
+import './index.scss'
 
 const { Search } = Input;
 
@@ -18,7 +19,21 @@ const columns = [
 		title: 'Value',
 		dataIndex: 'value',
 		width: 100,
-		render: (text, record, index): string => `${record.value} ${record.currency ? record.currency : 'zł'}`
+		render: (text, record, index) => {
+			const { value, currency } = record;
+
+			switch (true) {
+				case value < 0:
+					return (
+						<span className="table--highlight table--income">{`${value} ${currency ? currency : 'zł'}`}</span>
+					);
+
+				case value > 0:
+					return (
+						<span className="table--highlight table--expense">{`${value} ${currency ? currency : 'zł'}`}</span>
+					);
+			}
+		}
 	},
 
 	{

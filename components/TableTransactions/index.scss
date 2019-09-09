@@ -1,3 +1,9 @@
+$value-border-radius: 5px;
+$value-padding-tb: 3px;
+$value-padding-lr: 7px;
+$value-alpha: 0.1;
+$value-width: 80px;
+
 .account-cards {
 	display: flex;
 	align-items: flex-start;
@@ -19,4 +25,24 @@
 		right: -80%;
 		bottom: -36px;
 	}
+}
+
+.table--highlight{
+	width: $value-width;
+	padding-top: $value-padding-tb;
+	padding-bottom: $value-padding-tb;
+	padding-right: $value-padding-lr;
+	padding-left: $value-padding-lr;
+	border-radius: $value-border-radius;
+	font-weight: 500;
+}
+
+.table--expense {
+	background: rgba(0, 170, 68, $value-alpha);
+	color: #00aa44;
+}
+.table--income {
+
+	background: rgba(255, 0, 0, $value-alpha);
+	color: #ff0000;
 }
